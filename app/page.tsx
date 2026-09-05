@@ -5,6 +5,7 @@ import { useMemo, useState, type ReactNode } from "react";
 import { projects, type Project } from "@/data/projects";
 import { site } from "@/data/site";
 import FinanceLab from "@/components/FinanceLab";
+import ExperienceWorkflows from "@/components/ExperienceWorkflows";
 
 const categories = [
   "All",
@@ -222,22 +223,33 @@ export default function Home() {
       </section>
 
       <section id="experience">
+        <style>{`
+          .experience-summary{border:1px solid #dfe5e8;border-radius:16px;padding:20px;background:#fff}.experience-summary-head{display:flex;justify-content:space-between;gap:18px;align-items:flex-start;flex-wrap:wrap}.experience-kicker{font-size:11px;text-transform:uppercase;letter-spacing:.15em;color:#68777d;font-weight:700}.experience-title{font-size:21px;margin:5px 0}.experience-meta{font-size:13px;color:#68777d}.experience-tag{border:1px solid #dfe5e8;border-radius:999px;padding:7px 10px;font-size:11px;font-weight:600}.experience-points{display:grid;grid-template-columns:1fr 1fr;gap:10px 28px;margin-top:18px}.experience-point{font-size:14px;line-height:1.55;color:#223039}.experience-tools{display:flex;flex-wrap:wrap;gap:8px;margin-top:18px}.experience-tool{border:1px solid #dfe5e8;border-radius:999px;padding:6px 10px;font-size:11px;background:#fafbfb}.cert-row-rich{display:grid;grid-template-columns:44px 1fr;gap:11px;align-items:center;padding:11px 0;border-bottom:1px solid #e5e9eb}.cert-row-rich:last-child{border-bottom:0}.cert-logo-mark{width:38px;height:38px;border:1px solid #dfe5e8;border-radius:9px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:11px;background:#fafbfb}.cert-copy strong,.cert-copy span{display:block}.cert-copy span{font-size:12px;color:#68777d;margin-top:2px}@media(max-width:760px){.experience-points{grid-template-columns:1fr}}
+        `}</style>
         <div className="wrap">
           <div className="section-head"><div className="index">04 / Experience</div><div><h2>Professional experience</h2></div></div>
-          <div className="exp-grid">
-            <div className="meta">eClerx Services Ltd.<br/>Client: Morgan Stanley<br/><br/>Feb 2022 – Apr 2024<br/>Mumbai, India</div>
-            <div>
-              <h3>Financial Analyst</h3>
-              <strong>Middle Office Reconciliation · Securities Lending &amp; Prime Brokerage</strong>
-              <ul>
-                <li>Performed daily cash and position reconciliation across 20+ accounts, resolving aged balance and position breaks across bonds, cash, and derivative accounts.</li>
-                <li>Investigated and cleared 10–30 breaks per day through trade-level research, transaction matching, DTCC workflows, internal post-trade systems, and mainframe tools.</li>
-                <li>Executed and validated high-value wire transfers of $200M–$500M per day across domestic and international accounts while meeting T+0 / same-day deadlines.</li>
-                <li>Monitored market exposure and funding risk, including secured funding and treasury reporting using Excel and VBA.</li>
-                <li>Supported Prime Brokerage Billing through client-charge processing, journal posting, and fee validation.</li>
-              </ul>
+          <div className="experience-summary">
+            <div className="experience-summary-head">
+              <div>
+                <div className="experience-kicker">Professional Experience</div>
+                <h3 className="experience-title">Financial Analyst — eClerx Services Ltd.</h3>
+                <div className="experience-meta">Client: Morgan Stanley · Mumbai, India · Feb 2022 – Apr 2024</div>
+              </div>
+              <div className="experience-tag">Securities Operations · Treasury · Reconciliation</div>
+            </div>
+            <div className="experience-points">
+              <div className="experience-point">• Reconciled 20+ domestic and international accounts daily, investigating cash, securities, rate, quantity, date, and system-calculation exceptions.</div>
+              <div className="experience-point">• Supported approximately $200M–$500M in daily wire activity, including three key accounts with Controller, VP, and Director authorization.</div>
+              <div className="experience-point">• Reviewed approximately 20,000 line items across a global breaks report using manual controls plus Excel/VBA and Alteryx-assisted workflows.</div>
+              <div className="experience-point">• Monitored funding exposure, account balances, daylight overdraft risk, and margin requirements to support treasury operations and settlement readiness.</div>
+              <div className="experience-point">• Partnered with Trade Support and Operations teams to investigate breaks, validate corrections, process journal adjustments, and manage ad-hoc requests.</div>
+              <div className="experience-point">• Generated secured-funding and treasury reports covering approximately $0–$10B in flows using Excel/VBA for funding decisions and operational planning.</div>
+            </div>
+            <div className="experience-tools">
+              {["Excel","VBA","Alteryx","DTCC","BNY 360","Mainframe","QWEST","SafeCash","CTS"].map((tool)=><span className="experience-tool" key={tool}>{tool}</span>)}
             </div>
           </div>
+          <ExperienceWorkflows />
         </div>
       </section>
 
@@ -314,17 +326,10 @@ export default function Home() {
             </div>
             <div className="panel">
               <h3>Certifications</h3>
-              {[
-                ["Bloomberg Essentials","Forage AI","Feb 2026"],
-                ["Alteryx Designer Core Certified","Alteryx","Mar 2026"],
-                ["Goldman Sachs Operations Job Simulation","Forage","Feb 2026"],
-                ["Goldman Sachs Risk Job Simulation","Forage","Feb 2026"],
-              ].map(([title, issuer, date]) => (
-                <div className="credential-row" key={title}>
-                  <strong>{title}</strong>
-                  <span>{issuer} · {date}</span>
-                </div>
-              ))}
+              <div className="cert-row-rich"><div className="cert-logo-mark">BBG</div><div className="cert-copy"><strong>Bloomberg Essentials</strong><span>Forage AI · Feb 2026</span></div></div>
+              <div className="cert-row-rich"><div className="cert-logo-mark">AX</div><div className="cert-copy"><strong>Alteryx Designer Core Certified</strong><span>Alteryx · Mar 2026</span></div></div>
+              <div className="cert-row-rich"><div className="cert-logo-mark">F</div><div className="cert-copy"><strong>Goldman Sachs Operations Job Simulation</strong><span>Forage · Feb 2026</span></div></div>
+              <div className="cert-row-rich"><div className="cert-logo-mark">F</div><div className="cert-copy"><strong>Goldman Sachs Risk Job Simulation</strong><span>Forage · Feb 2026</span></div></div>
             </div>
           </div>
         </div>
