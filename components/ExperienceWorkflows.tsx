@@ -2,235 +2,30 @@
 
 import { useState } from "react";
 
-type Step = {
-  label: string;
-  title: string;
-  description: string;
-  objective: string;
-  objectiveDetail: string;
-};
+type Step={label:string;title:string;description:string;objective:string;objectiveDetail:string};
 
-const reconciliationSteps: Step[] = [
-  {
-    label: "01 · Trade / Cash Activity",
-    title: "Transaction enters the operating environment",
-    description: "Cash movements, securities activity, financing transactions, fees, journals, and settlements create positions that must be validated across systems and accounts.",
-    objective: "Accuracy before funding",
-    objectiveDetail: "Validate activity before liquidity is released.",
-  },
-  {
-    label: "02 · Reconciliation",
-    title: "Internal and external records are compared",
-    description: "Reconcile 20+ domestic and international accounts daily, reviewing approximately 20,000 line items across a global breaks report. Manual checking is supported by Excel/VBA and Alteryx-assisted workflows to identify mismatches across cash, securities, CUSIP, quantity, rate, trade date, settlement date, and system calculations.",
-    objective: "Match integrity",
-    objectiveDetail: "Confirm that expected and actual activity agree.",
-  },
-  {
-    label: "03 · Break Detection",
-    title: "Exceptions are classified by cause and severity",
-    description: "Breaks can arise from amount, settlement date, trade date, CUSIP, quantity, rate, missing transactions, duplicates, and system-calculation differences. High-value, aged, or unresolved exceptions are prioritized for investigation and escalation.",
-    objective: "Prioritize exceptions",
-    objectiveDetail: "Separate routine breaks from items requiring immediate attention.",
-  },
-  {
-    label: "04 · Investigation",
-    title: "Transaction-level evidence is traced across systems",
-    description: "Work with the Trade Support team and Operations teams to investigate transaction details, account movements, identifiers, dates, rates, and system calculations to isolate the source of the break.",
-    objective: "Root-cause analysis",
-    objectiveDetail: "Determine whether the issue is trade, cash, system, data, or accounting related.",
-  },
-  {
-    label: "05 · Resolution",
-    title: "The exception is corrected through the appropriate process",
-    description: "Depending on the cause, resolution may involve fixing trade/system data, a journal entry, an ad-hoc request, an approved write-off, escalation, or carrying the break forward until the required correction is completed.",
-    objective: "Controlled resolution",
-    objectiveDetail: "Resolve exceptions accurately while maintaining the required approval and control process.",
-  },
-  {
-    label: "06 · Funding / Wire",
-    title: "Account positions are reviewed for liquidity needs",
-    description: "Supported approximately $200M–$500M in daily wire activity, including roughly $500M across three key accounts, with Controller, VP, and Director authorization. After approval, coordinate with the Funding team to support settlement and trader liquidity.",
-    objective: "Funding readiness",
-    objectiveDetail: "Maintain sufficient liquidity for settlement and trading activity.",
-  },
-  {
-    label: "07 · Controls & Reporting",
-    title: "Aged breaks, funding exposure, and exceptions are monitored",
-    description: "Open items, escalations, funding needs, unresolved exceptions, and aged breaks are tracked for control, management review, and operational reporting.",
-    objective: "Operational control",
-    objectiveDetail: "Reduce unresolved risk and maintain timely settlement.",
-  },
+const reconciliationSteps:Step[]=[
+{label:"01 · Trade / Cash Activity",title:"Transaction enters the operating environment",description:"Cash movements, securities activity, financing transactions, fees, journals, and settlements create positions that must be validated across systems and accounts.",objective:"Accuracy before funding",objectiveDetail:"Validate activity before liquidity is released."},
+{label:"02 · Reconciliation",title:"Internal and external records are compared",description:"Reconcile 20+ domestic and international accounts daily, reviewing approximately 20,000 line items across a global breaks report. Manual checking is supported by Excel/VBA and Alteryx-assisted workflows to identify mismatches across cash, securities, CUSIP, quantity, rate, trade date, settlement date, and system calculations.",objective:"Match integrity",objectiveDetail:"Confirm that expected and actual activity agree."},
+{label:"03 · Break Detection",title:"Exceptions are classified by cause and severity",description:"Breaks can arise from amount, settlement date, trade date, CUSIP, quantity, rate, missing transactions, duplicates, and system-calculation differences. High-value, aged, or unresolved exceptions are prioritized for investigation and escalation.",objective:"Prioritize exceptions",objectiveDetail:"Separate routine breaks from items requiring immediate attention."},
+{label:"04 · Investigation",title:"Transaction-level evidence is traced across systems",description:"Work with the Trade Support and Operations teams to investigate transaction details, account movements, identifiers, dates, rates, and system calculations to isolate the source of the break.",objective:"Root-cause analysis",objectiveDetail:"Determine whether the issue is trade, cash, system, data, or accounting related."},
+{label:"05 · Resolution",title:"The exception is corrected through the appropriate process",description:"Depending on the cause, resolution may involve fixing trade/system data, a journal entry, an ad-hoc request, an approved write-off, escalation, or carrying the break forward until the required correction is completed.",objective:"Controlled resolution",objectiveDetail:"Resolve exceptions accurately while maintaining the required approval and control process."},
+{label:"06 · Funding / Wire",title:"Account positions are reviewed for liquidity needs",description:"Supported approximately $200M–$500M in daily wire activity, including roughly $500M across three key accounts, with Controller, VP, and Director authorization. After approval, coordinate with the Funding team to support settlement and trader liquidity.",objective:"Funding readiness",objectiveDetail:"Maintain sufficient liquidity for settlement and trading activity."},
+{label:"07 · Controls & Reporting",title:"Aged breaks, funding exposure, and exceptions are monitored",description:"Open items, escalations, funding needs, unresolved exceptions, and aged breaks are tracked for control, management review, and operational reporting.",objective:"Operational control",objectiveDetail:"Reduce unresolved risk and maintain timely settlement."}
 ];
 
-const treasurySteps: Step[] = [
-  {
-    label: "01 · Aggregate Cash Position",
-    title: "Track inflows and outflows across funding accounts",
-    description: "Consolidate account activity to determine the aggregate net cash balance and identify whether funding exposure is increasing during the day.",
-    objective: "Liquidity visibility",
-    objectiveDetail: "Maintain a clear view of available cash and intraday funding needs.",
-  },
-  {
-    label: "02 · 30-Minute Monitoring",
-    title: "Recurring treasury reporting cycle",
-    description: "Review and communicate aggregate net cash balance, inflows, outflows, funding exposure, and account activity approximately every 30 minutes.",
-    objective: "Timely monitoring",
-    objectiveDetail: "Identify liquidity deterioration before it becomes a larger settlement issue.",
-  },
-  {
-    label: "03 · Daylight Overdraft Tracking",
-    title: "Monitor threshold utilization",
-    description: "Track the aggregate intraday cash position against the configured daylight-overdraft or liquidity threshold and identify approaching or actual breaches.",
-    objective: "Threshold control",
-    objectiveDetail: "Maintain the account position within approved liquidity limits.",
-  },
-  {
-    label: "04 · Threshold Breach & Funding Action",
-    title: "Request funding when the limit is breached",
-    description: "If the aggregate position moves below the threshold, calculate the required funding amount and initiate a wire request to restore the balance above the configured limit.",
-    objective: "Restore liquidity",
-    objectiveDetail: "Return the position to an acceptable funding level as quickly as possible.",
-  },
-  {
-    label: "05 · Wire Authorization & Settlement",
-    title: "Coordinate funding through the approval chain",
-    description: "Wire activity is validated through the required authorization process and communicated to the Funding team so the cash movement can settle and restore account liquidity.",
-    objective: "Settlement execution",
-    objectiveDetail: "Ensure approved funding reaches the correct account on time.",
-  },
-  {
-    label: "06 · Fee Monitoring",
-    title: "Track overdraft-related charges",
-    description: "Monitor current total charges, threshold-breach fees, and threshold flat fees, and confirm that payments or corrections are reflected in subsequent reports.",
-    objective: "Charge control",
-    objectiveDetail: "Ensure outstanding treasury charges are identified and cleared.",
-  },
-  {
-    label: "07 · Controls & Reporting",
-    title: "Funding exposure and treasury exceptions are monitored",
-    description: "Track daylight overdraft exposure, funding actions, open charges, threshold breaches, and settlement status for management review and operational reporting.",
-    objective: "Treasury control",
-    objectiveDetail: "Maintain liquidity discipline and reduce avoidable funding and settlement risk.",
-  },
+const treasurySteps:Step[]=[
+{label:"01 · Aggregate Cash Position",title:"Track inflows and outflows across funding accounts",description:"Consolidate account activity to determine the aggregate net cash balance and identify whether funding exposure is increasing during the day.",objective:"Liquidity visibility",objectiveDetail:"Maintain a clear view of available cash and intraday funding needs."},
+{label:"02 · 30-Minute Monitoring",title:"Recurring treasury reporting cycle",description:"Review and communicate aggregate net cash balance, inflows, outflows, funding exposure, and account activity approximately every 30 minutes.",objective:"Timely monitoring",objectiveDetail:"Identify liquidity deterioration before it becomes a larger settlement issue."},
+{label:"03 · Daylight Overdraft Tracking",title:"Monitor threshold utilization",description:"Track the aggregate intraday cash position against the configured daylight-overdraft or liquidity threshold and identify approaching or actual breaches.",objective:"Threshold control",objectiveDetail:"Maintain the account position within approved liquidity limits."},
+{label:"04 · Margin Requirement / Margin Call",title:"Monitor collateral-driven liquidity needs",description:"Track margin requirements and margin calls as additional liquidity obligations that can reduce available cash and increase intraday funding needs.",objective:"Collateral liquidity awareness",objectiveDetail:"Include margin-related cash needs when assessing the funding position."},
+{label:"05 · Threshold Breach & Funding Action",title:"Request funding when the limit is breached",description:"If the aggregate position moves below the threshold, calculate the required funding amount and initiate a wire request to restore the balance above the configured limit.",objective:"Restore liquidity",objectiveDetail:"Return the position to an acceptable funding level as quickly as possible."},
+{label:"06 · Wire Authorization & Settlement",title:"Coordinate funding through the approval chain",description:"Wire activity is validated through the required authorization process and communicated to the Funding team so the cash movement can settle and restore account liquidity.",objective:"Settlement execution",objectiveDetail:"Ensure approved funding reaches the correct account on time."},
+{label:"07 · Fee Monitoring & Controls",title:"Track charges and confirm recovery",description:"Monitor current total charges, threshold-breach fees, threshold flat fees, funding actions, and settlement status, then confirm subsequent reports show restored liquidity and cleared charges.",objective:"Treasury control",objectiveDetail:"Maintain liquidity discipline and reduce avoidable funding and settlement risk."}
 ];
 
-function Workflow({ title, subtitle, steps }: { title: string; subtitle: string; steps: Step[] }) {
-  const [active, setActive] = useState<number | null>(0);
-  return (
-    <div className="xw-card">
-      <div className="xw-kicker">Interactive workflow</div>
-      <h3>{title}</h3>
-      <p className="xw-subtitle">{subtitle}</p>
-      <div className="xw-steps">
-        {steps.map((step, index) => {
-          const open = active === index;
-          return (
-            <button className={`xw-step ${open ? "open" : ""}`} key={step.label} onClick={() => setActive(open ? null : index)}>
-              <div className="xw-step-head">
-                <div>
-                  <span>{step.label}</span>
-                  <strong>{step.title}</strong>
-                </div>
-                <b aria-hidden="true">⌄</b>
-              </div>
-              {open && (
-                <div className="xw-detail">
-                  <p>{step.description}</p>
-                  <div className="xw-objective">
-                    <small>Operational objective</small>
-                    <strong>{step.objective}</strong>
-                    <span>{step.objectiveDetail}</span>
-                  </div>
-                </div>
-              )}
-            </button>
-          );
-        })}
-      </div>
-    </div>
-  );
-}
+function Workflow({title,subtitle,steps}:{title:string;subtitle:string;steps:Step[]}){const[active,setActive]=useState<number|null>(0);return <div className="xw-card"><div className="xw-kicker">Interactive workflow</div><h3>{title}</h3><p className="xw-subtitle">{subtitle}</p><div className="xw-steps">{steps.map((step,index)=>{const open=active===index;return <button className={`xw-step ${open?"open":""}`} key={step.label} onClick={()=>setActive(open?null:index)}><div className="xw-step-head"><div><span>{step.label}</span><strong>{step.title}</strong></div><b aria-hidden="true">⌄</b></div>{open&&<div className="xw-detail"><p>{step.description}</p><div className="xw-objective"><small>Operational objective</small><strong>{step.objective}</strong><span>{step.objectiveDetail}</span></div></div>}</button>})}</div></div>}
 
-export default function ExperienceWorkflows() {
-  return (
-    <div className="experience-interactive">
-      <style>{`
-        .experience-interactive{margin-top:34px}.xw-grid,.xd-grid{display:grid;grid-template-columns:1fr 1fr;gap:22px}.xw-card,.xd-card{border:1px solid #dfe5e8;border-radius:16px;background:#fff;padding:20px}.xw-kicker,.xd-kicker{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:#65747b;font-weight:700}.xw-card h3,.xd-card h3{margin:5px 0 5px}.xw-subtitle,.xd-subtitle{margin:0 0 15px;color:#65747b;font-size:14px;line-height:1.55}.xw-steps{display:grid;gap:9px}.xw-step{width:100%;border:1px solid #dfe5e8;border-radius:12px;background:#f8faf9;padding:12px;text-align:left;color:inherit;cursor:pointer}.xw-step.open{border-color:#8ab3a0;background:#fff}.xw-step-head{display:flex;justify-content:space-between;gap:12px;align-items:flex-start}.xw-step-head span{display:block;color:#6a797f;font-size:11px}.xw-step-head strong{display:block;font-size:13px;margin-top:3px;font-weight:600}.xw-step-head b{font-size:16px;font-weight:400;transition:.2s}.xw-step.open .xw-step-head b{transform:rotate(180deg)}.xw-detail{border-top:1px solid #e4e9eb;margin-top:10px;padding-top:10px}.xw-detail p{font-size:13px;line-height:1.6;color:#56666d;margin:0}.xw-objective{margin-top:10px;border-left:3px solid #46785f;padding-left:10px}.xw-objective small,.xw-objective strong,.xw-objective span{display:block}.xw-objective small{font-size:10px;color:#758389;text-transform:uppercase;letter-spacing:.08em}.xw-objective strong{font-size:12px;margin:2px 0}.xw-objective span{font-size:12px;color:#65747b}.xd-grid{margin-top:22px}.xd-metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:15px 0}.xd-metric{border:1px solid #e1e6e8;border-radius:10px;padding:10px;background:#f8faf9}.xd-metric span{display:block;font-size:10px;color:#6f7d83}.xd-metric strong{display:block;font-size:15px;margin-top:2px}.xd-table{overflow:auto}.xd-table table{width:100%;border-collapse:collapse;font-size:12px}.xd-table th,.xd-table td{padding:9px 7px;border-bottom:1px solid #e4e9eb;text-align:left;white-space:nowrap}.xd-status{display:inline-block;border:1px solid #d9e0e3;border-radius:999px;padding:3px 7px;font-size:10px;font-weight:700}.xd-red{background:#fbeeee}.xd-amber{background:#fff7e4}.xd-green{background:#edf8f1}.xd-note{font-size:11px;color:#738087;line-height:1.5;margin-top:9px}.treasury-chart{width:100%;height:auto;margin-top:8px}.treasury-line{fill:none;stroke:#46785f;stroke-width:3}.treasury-area{fill:rgba(70,120,95,.10)}.treasury-threshold{stroke:#b94b4b;stroke-width:2;stroke-dasharray:6 4}.fee-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:10px}.fee{border:1px solid #e1e6e8;border-radius:10px;padding:9px}.fee span,.fee small{display:block}.fee span{font-size:10px;color:#6f7d83}.fee strong{font-size:14px}.fee small{font-size:10px;color:#46785f;margin-top:2px}@media(max-width:900px){.xw-grid,.xd-grid{grid-template-columns:1fr}.xd-metrics{grid-template-columns:repeat(2,1fr)}}@media(max-width:520px){.fee-grid{grid-template-columns:1fr}.xw-card,.xd-card{padding:15px}}
-      `}</style>
-
-      <div className="xw-grid">
-        <Workflow
-          title="Reconciliation & Exception Management"
-          subtitle="From transaction activity to break investigation, controlled resolution, funding, and reporting."
-          steps={reconciliationSteps}
-        />
-        <Workflow
-          title="Treasury & Intraday Liquidity Monitoring"
-          subtitle="From cash monitoring to daylight-overdraft control, funding actions, fees, and reporting."
-          steps={treasurySteps}
-        />
-      </div>
-
-      <div className="xd-grid">
-        <div className="xd-card">
-          <div className="xd-kicker">Reconciliation dashboard</div>
-          <h3>Break & Exception Overview</h3>
-          <p className="xd-subtitle">Synthetic operational view of account exceptions, escalation, aging, and control status.</p>
-          <div className="xd-metrics">
-            <div className="xd-metric"><span>Accounts</span><strong>20+</strong></div>
-            <div className="xd-metric"><span>Global lines</span><strong>~20,000</strong></div>
-            <div className="xd-metric"><span>Open breaks</span><strong>12</strong></div>
-            <div className="xd-metric"><span>Escalations</span><strong>2</strong></div>
-          </div>
-          <div className="xd-table">
-            <table>
-              <thead><tr><th>Account</th><th>Exception</th><th>Value</th><th>Control</th></tr></thead>
-              <tbody>
-                <tr><td>ACC-102</td><td>Amount mismatch</td><td>$245,000</td><td><span className="xd-status xd-red">High-value escalation</span></td></tr>
-                <tr><td>ACC-117</td><td>Settlement date</td><td>$18,500</td><td><span className="xd-status xd-amber">Investigate</span></td></tr>
-                <tr><td>ACC-121</td><td>Residual cash</td><td>$7.42</td><td><span className="xd-status xd-green">Analyst authority</span></td></tr>
-                <tr><td>ACC-124</td><td>Residual cash</td><td>$64.00</td><td><span className="xd-status xd-amber">VP approval</span></td></tr>
-              </tbody>
-            </table>
-          </div>
-          <p className="xd-note">Synthetic sample data. Large operational breaks are investigated or escalated, while unresolved items may be carried forward. Write-off authority is shown only for eligible residual balances.</p>
-        </div>
-
-        <div className="xd-card">
-          <div className="xd-kicker">Treasury dashboard</div>
-          <h3>Intraday Liquidity & Daylight Overdraft Monitoring</h3>
-          <p className="xd-subtitle">Synthetic view of aggregate cash, threshold utilization, funding action, and fee clearance.</p>
-          <div className="xd-metrics">
-            <div className="xd-metric"><span>Funding flows</span><strong>$0–$10B</strong></div>
-            <div className="xd-metric"><span>Monitoring</span><strong>30 min</strong></div>
-            <div className="xd-metric"><span>Peak overdraft</span><strong>-$240M</strong></div>
-            <div className="xd-metric"><span>Funding wire</span><strong>$300M</strong></div>
-          </div>
-          <svg className="treasury-chart" viewBox="0 0 560 235" aria-label="Synthetic intraday liquidity chart">
-            <line x1="42" y1="195" x2="540" y2="195" stroke="#dfe5e8" />
-            <line x1="42" y1="20" x2="42" y2="195" stroke="#dfe5e8" />
-            <line x1="42" y1="132" x2="540" y2="132" className="treasury-threshold" />
-            <text x="535" y="124" textAnchor="end" fontSize="10" fill="#68777d">Liquidity threshold</text>
-            <path className="treasury-area" d="M42,58 L110,70 L178,99 L246,141 L314,171 L382,92 L450,80 L540,67 L540,195 L42,195 Z" />
-            <path className="treasury-line" d="M42,58 L110,70 L178,99 L246,141 L314,171 L382,92 L450,80 L540,67" />
-            <circle cx="314" cy="171" r="5" fill="#b94b4b" />
-            <circle cx="382" cy="92" r="5" fill="#46785f" />
-            <text x="314" y="188" textAnchor="middle" fontSize="10" fill="#68777d">Breach</text>
-            <text x="382" y="81" textAnchor="middle" fontSize="10" fill="#68777d">Wire settles</text>
-            <text x="42" y="216" fontSize="10" fill="#68777d">09:00</text>
-            <text x="170" y="216" fontSize="10" fill="#68777d">11:00</text>
-            <text x="300" y="216" fontSize="10" fill="#68777d">13:00</text>
-            <text x="430" y="216" fontSize="10" fill="#68777d">15:00</text>
-            <text x="515" y="216" fontSize="10" fill="#68777d">17:00</text>
-          </svg>
-          <div className="fee-grid">
-            <div className="fee"><span>Current overdraft charge</span><strong>$0</strong><small>Cleared</small></div>
-            <div className="fee"><span>Threshold breach fee</span><strong>$0</strong><small>Cleared</small></div>
-            <div className="fee"><span>Threshold flat fee</span><strong>$0</strong><small>Cleared</small></div>
-          </div>
-          <p className="xd-note">Synthetic example: aggregate cash falls below the configured threshold, a funding request is initiated, and the next monitoring cycle confirms liquidity recovery and cleared charges.</p>
-        </div>
-      </div>
-    </div>
-  );
-}
+export default function ExperienceWorkflows(){return <div className="experience-interactive"><style>{`
+.experience-interactive{margin-top:34px}.xw-grid,.xd-grid{display:grid;grid-template-columns:1fr 1fr;gap:22px}.xw-card,.xd-card{border:1px solid #dfe5e8;border-radius:16px;background:#fff;padding:20px}.xw-kicker,.xd-kicker{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:#65747b;font-weight:700}.xw-card h3,.xd-card h3{margin:5px 0}.xw-subtitle,.xd-subtitle{margin:0 0 15px;color:#65747b;font-size:14px;line-height:1.55}.xw-steps{display:grid;gap:9px}.xw-step{width:100%;border:1px solid #dfe5e8;border-radius:12px;background:#f8faf9;padding:12px;text-align:left;color:inherit;cursor:pointer}.xw-step.open{border-color:#8ab3a0;background:#fff}.xw-step-head{display:flex;justify-content:space-between;gap:12px;align-items:flex-start}.xw-step-head span{display:block;color:#6a797f;font-size:11px}.xw-step-head strong{display:block;font-size:13px;margin-top:3px;font-weight:600}.xw-step-head b{font-size:16px;font-weight:400;transition:.2s}.xw-step.open .xw-step-head b{transform:rotate(180deg)}.xw-detail{border-top:1px solid #e4e9eb;margin-top:10px;padding-top:10px}.xw-detail p{font-size:13px;line-height:1.6;color:#56666d;margin:0}.xw-objective{margin-top:10px;border-left:3px solid #46785f;padding-left:10px}.xw-objective small,.xw-objective strong,.xw-objective span{display:block}.xw-objective small{font-size:10px;color:#758389;text-transform:uppercase;letter-spacing:.08em}.xw-objective strong{font-size:12px;margin:2px 0}.xw-objective span{font-size:12px;color:#65747b}.xd-grid{margin-top:22px}.xd-metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:15px 0}.xd-metric{border:1px solid #e1e6e8;border-radius:10px;padding:10px;background:#f8faf9}.xd-metric span{display:block;font-size:10px;color:#6f7d83}.xd-metric strong{display:block;font-size:15px;margin-top:2px}.xd-table{overflow:auto}.xd-table table{width:100%;border-collapse:collapse;font-size:12px}.xd-table th,.xd-table td{padding:9px 7px;border-bottom:1px solid #e4e9eb;text-align:left;white-space:nowrap}.xd-status{display:inline-block;border:1px solid #d9e0e3;border-radius:999px;padding:3px 7px;font-size:10px;font-weight:700}.xd-red{background:#fbeeee}.xd-amber{background:#fff7e4}.xd-green{background:#edf8f1}.xd-note{font-size:11px;color:#738087;line-height:1.5;margin-top:9px}.resolution-path{margin-top:14px;border:1px solid #e1e6e8;border-radius:12px;padding:12px;background:#fafbfb}.resolution-path h4{margin:0 0 10px;font-size:12px}.resolution-row{display:flex;align-items:center;gap:7px;flex-wrap:wrap}.resolution-node{font-size:10px;border:1px solid #dfe5e8;border-radius:8px;background:#fff;padding:7px 8px}.resolution-arrow{color:#7b898e}.treasury-chart{width:100%;height:auto;margin-top:8px}.treasury-line{fill:none;stroke:#46785f;stroke-width:3}.treasury-area{fill:rgba(70,120,95,.10)}.treasury-threshold{stroke:#b94b4b;stroke-width:2;stroke-dasharray:6 4}.fee-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:10px}.fee{border:1px solid #e1e6e8;border-radius:10px;padding:9px}.fee span,.fee small{display:block}.fee span{font-size:10px;color:#6f7d83}.fee strong{font-size:14px}.fee small{font-size:10px;color:#46785f;margin-top:2px}@media(max-width:900px){.xw-grid,.xd-grid{grid-template-columns:1fr}.xd-metrics{grid-template-columns:repeat(2,1fr)}}@media(max-width:520px){.fee-grid{grid-template-columns:repeat(2,1fr)}.xw-card,.xd-card{padding:15px}}
+`}</style><div className="xw-grid"><Workflow title="Reconciliation & Exception Management" subtitle="From transaction activity to break investigation, controlled resolution, funding, and reporting." steps={reconciliationSteps}/><Workflow title="Treasury & Intraday Liquidity Monitoring" subtitle="From cash monitoring to daylight-overdraft control, margin requirements, funding actions, fees, and reporting." steps={treasurySteps}/></div><div className="xd-grid"><div className="xd-card"><div className="xd-kicker">Reconciliation dashboard</div><h3>Break & Exception Overview</h3><p className="xd-subtitle">Synthetic operational view of account exceptions, escalation, aging, and control status.</p><div className="xd-metrics"><div className="xd-metric"><span>Accounts</span><strong>20+</strong></div><div className="xd-metric"><span>Global lines</span><strong>~20,000</strong></div><div className="xd-metric"><span>Open breaks</span><strong>12</strong></div><div className="xd-metric"><span>Escalations</span><strong>2</strong></div></div><div className="xd-table"><table><thead><tr><th>Account</th><th>Exception</th><th>Value</th><th>Control</th></tr></thead><tbody><tr><td>ACC-102</td><td>Amount mismatch</td><td>$245,000</td><td><span className="xd-status xd-red">High-value escalation</span></td></tr><tr><td>ACC-117</td><td>Settlement date</td><td>$18,500</td><td><span className="xd-status xd-amber">Investigate</span></td></tr><tr><td>ACC-121</td><td>Residual cash</td><td>$7.42</td><td><span className="xd-status xd-green">Analyst authority</span></td></tr><tr><td>ACC-124</td><td>Residual cash</td><td>$64.00</td><td><span className="xd-status xd-amber">VP approval</span></td></tr></tbody></table></div><div className="resolution-path"><h4>Break Resolution Path</h4><div className="resolution-row"><span className="resolution-node">Investigate in Mainframe / internal system</span><span className="resolution-arrow">→</span><span className="resolution-node">Match trade data with DTCC</span><span className="resolution-arrow">→</span><span className="resolution-node">Fix trade in system</span><span className="resolution-arrow">→</span><span className="resolution-node">Journal entry / authorized write-off</span><span className="resolution-arrow">→</span><span className="resolution-node">Track next-day break status</span><span className="resolution-arrow">→</span><span className="resolution-node">Wire / funding remains aligned</span></div></div><p className="xd-note">Synthetic sample data. Large operational breaks are investigated or escalated, while unresolved items may be carried forward.</p></div><div className="xd-card"><div className="xd-kicker">Treasury dashboard</div><h3>Intraday Liquidity & Daylight Overdraft Monitoring</h3><p className="xd-subtitle">Synthetic view of aggregate net cash, threshold utilization, margin requirement, funding action, and fee clearance.</p><div className="xd-metrics"><div className="xd-metric"><span>Funding flows</span><strong>$0–$10B</strong></div><div className="xd-metric"><span>Monitoring</span><strong>30 min</strong></div><div className="xd-metric"><span>Peak overdraft</span><strong>-$240M</strong></div><div className="xd-metric"><span>Funding wire</span><strong>$300M</strong></div></div><svg className="treasury-chart" viewBox="0 0 560 235" aria-label="Synthetic intraday liquidity chart"><line x1="42" y1="195" x2="540" y2="195" stroke="#dfe5e8"/><line x1="42" y1="20" x2="42" y2="195" stroke="#dfe5e8"/><line x1="42" y1="132" x2="540" y2="132" className="treasury-threshold"/><text x="535" y="124" textAnchor="end" fontSize="10" fill="#68777d">Liquidity threshold</text><path className="treasury-area" d="M42,58 L110,70 L178,99 L246,141 L314,171 L382,92 L450,80 L540,67 L540,195 L42,195 Z"/><path className="treasury-line" d="M42,58 L110,70 L178,99 L246,141 L314,171 L382,92 L450,80 L540,67"/><text x="96" y="53" fontSize="10" fill="#46785f">Net cash balance</text><circle cx="314" cy="171" r="5" fill="#b94b4b"/><circle cx="382" cy="92" r="5" fill="#46785f"/><text x="314" y="188" textAnchor="middle" fontSize="10" fill="#68777d">Breach</text><text x="382" y="81" textAnchor="middle" fontSize="10" fill="#68777d">Wire settles</text><text x="42" y="216" fontSize="10" fill="#68777d">09:00</text><text x="170" y="216" fontSize="10" fill="#68777d">11:00</text><text x="300" y="216" fontSize="10" fill="#68777d">13:00</text><text x="430" y="216" fontSize="10" fill="#68777d">15:00</text><text x="515" y="216" fontSize="10" fill="#68777d">17:00</text></svg><div className="fee-grid"><div className="fee"><span>Margin requirement</span><strong>$85M</strong><small>Illustrative</small></div><div className="fee"><span>Current overdraft charge</span><strong>$0</strong><small>Cleared</small></div><div className="fee"><span>Threshold breach fee</span><strong>$0</strong><small>Cleared</small></div><div className="fee"><span>Threshold flat fee</span><strong>$0</strong><small>Cleared</small></div></div><p className="xd-note">Synthetic example: net cash falls below the configured threshold, margin requirements increase liquidity needs, a funding request is initiated, and the next monitoring cycle confirms recovery and cleared charges.</p></div></div></div>}
