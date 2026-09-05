@@ -224,7 +224,7 @@ export default function Home() {
 
       <section id="experience">
         <style>{`
-          .experience-summary{border:1px solid #dfe5e8;border-radius:16px;padding:20px;background:#fff}.experience-summary-head{display:flex;justify-content:space-between;gap:18px;align-items:flex-start;flex-wrap:wrap}.experience-kicker{font-size:11px;text-transform:uppercase;letter-spacing:.15em;color:#68777d;font-weight:700}.experience-title{font-size:21px;margin:5px 0}.experience-meta{font-size:13px;color:#68777d}.experience-tag{border:1px solid #dfe5e8;border-radius:999px;padding:7px 10px;font-size:11px;font-weight:600}.experience-points{display:grid;grid-template-columns:1fr 1fr;gap:10px 28px;margin-top:18px}.experience-point{font-size:14px;line-height:1.55;color:#223039}.experience-tools{display:flex;flex-wrap:wrap;gap:8px;margin-top:18px}.experience-tool{border:1px solid #dfe5e8;border-radius:999px;padding:6px 10px;font-size:11px;background:#fafbfb}.cert-row-rich{display:grid;grid-template-columns:44px 1fr;gap:11px;align-items:center;padding:11px 0;border-bottom:1px solid #e5e9eb}.cert-row-rich:last-child{border-bottom:0}.cert-logo-mark{width:38px;height:38px;border:1px solid #dfe5e8;border-radius:9px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:11px;background:#fafbfb}.cert-copy strong,.cert-copy span{display:block}.cert-copy span{font-size:12px;color:#68777d;margin-top:2px}@media(max-width:760px){.experience-points{grid-template-columns:1fr}}
+          .experience-summary{border:1px solid #dfe5e8;border-radius:16px;padding:20px;background:#fff}.experience-summary-head{display:flex;justify-content:space-between;gap:18px;align-items:flex-start;flex-wrap:wrap}.experience-kicker{font-size:11px;text-transform:uppercase;letter-spacing:.15em;color:#68777d;font-weight:700}.experience-title{font-size:21px;margin:5px 0}.experience-meta{font-size:13px;color:#68777d}.experience-tag{border:1px solid #dfe5e8;border-radius:999px;padding:7px 10px;font-size:11px;font-weight:600}.experience-points{display:grid;grid-template-columns:1fr 1fr;gap:10px 28px;margin-top:18px}.experience-point{font-size:14px;line-height:1.55;color:#223039}.experience-tools{display:flex;flex-wrap:wrap;gap:8px;margin-top:18px}.experience-tool{border:1px solid #dfe5e8;border-radius:999px;padding:6px 10px;font-size:11px;background:#fafbfb}.cert-row-simple{padding:12px 0;border-bottom:1px solid #e5e9eb}.cert-row-simple:last-child{border-bottom:0}.cert-row-simple strong,.cert-row-simple span{display:block}.cert-row-simple span{font-size:12px;color:#68777d;margin-top:2px}@media(max-width:760px){.experience-points{grid-template-columns:1fr}}
         `}</style>
         <div className="wrap">
           <div className="section-head"><div className="index">04 / Experience</div><div><h2>Professional experience</h2></div></div>
@@ -326,10 +326,10 @@ export default function Home() {
             </div>
             <div className="panel">
               <h3>Certifications</h3>
-              <div className="cert-row-rich"><div className="cert-logo-mark">BBG</div><div className="cert-copy"><strong>Bloomberg Essentials</strong><span>Forage AI · Feb 2026</span></div></div>
-              <div className="cert-row-rich"><div className="cert-logo-mark">AX</div><div className="cert-copy"><strong>Alteryx Designer Core Certified</strong><span>Alteryx · Mar 2026</span></div></div>
-              <div className="cert-row-rich"><div className="cert-logo-mark">F</div><div className="cert-copy"><strong>Goldman Sachs Operations Job Simulation</strong><span>Forage · Feb 2026</span></div></div>
-              <div className="cert-row-rich"><div className="cert-logo-mark">F</div><div className="cert-copy"><strong>Goldman Sachs Risk Job Simulation</strong><span>Forage · Feb 2026</span></div></div>
+              <div className="cert-row-simple"><strong>Bloomberg Essentials</strong><span>Forage AI · Feb 2026</span></div>
+              <div className="cert-row-simple"><strong>Alteryx Designer Core Certified</strong><span>Alteryx · Mar 2026</span></div>
+              <div className="cert-row-simple"><strong>Goldman Sachs Operations Job Simulation</strong><span>Forage · Feb 2026</span></div>
+              <div className="cert-row-simple"><strong>Goldman Sachs Risk Job Simulation</strong><span>Forage · Feb 2026</span></div>
             </div>
           </div>
         </div>
